@@ -43,3 +43,18 @@ function toggleStoryForm() {
 $navSubmit.on("click", function () {
   toggleStoryForm();
 });
+
+
+// Allow users to see all stories they favorited
+$navFavorites.on("click", function () {
+  hidePageComponents();
+  // const favoriteStories = storyList.stories.filter(story =>
+  //   currentUser.favorites.some(favorite => favorite.storyId === story.storyId));
+  putFavoritesOnPage(); // Display the favorite stories on the page
+});
+
+$navStories.on("click", function () {
+  hidePageComponents();
+  showUserStories();
+});
+

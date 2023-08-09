@@ -22,14 +22,22 @@
 				<a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
 			</div>
 			<div class="nav-middle hidden">
-				<a href="#" class="nav-submit" id="nav-submit">Submit</a>
-				<a href="#" class="nav-favorites" id="nav-favorites">Favorites</a>
-				<a href="#" class="nav-stories" id="nav-stories">Stories</a>
+				<a href="#submit" class="nav-submit" id="nav-submit">Submit</a>
+				<a
+					href="#favorites"
+					onclick="putFavoritesOnPage()"
+					class="nav-favorites"
+					id="nav-favorites"
+					>Favorites</a
+				>
+				<a href="#stories" class="nav-stories" id="nav-stories">Stories</a>
 			</div>
 			<div class="nav-right">
-				<a class="nav-link" href="#" id="nav-login">Login/Signup</a>
-				<a class="nav-link" href="#" id="nav-user-profile"></a>
-				<a class="hidden" id="nav-logout" href="#"><small>(Logout)</small></a>
+				<a class="nav-link" href="#login" id="nav-login">Login/Signup</a>
+				<a class="nav-link" href="#user-profile" id="nav-user-profile"></a>
+				<a class="hidden" id="nav-logout" href="#logout"
+					><small>(Logout)</small></a
+				>
 			</div>
 		</nav>
 
@@ -66,13 +74,14 @@
 		</div>
 
 		<!-- Stories areas (all stories, user stories, favorites) -->
-		<br />
 		<section class="stories-container container">
 			<!-- Loading message (removed by JS after stories loaded) -->
 			<div id="stories-loading-msg">Loading&hellip;</div>
 
 			<!-- List of all stories -->
 			<ol id="all-stories-list" class="stories-list"></ol>
+			<ol id="all-favorites-list" class="favorites-list"></ol>
+			<ol class="user-story-list"></ol>
 		</section>
 
 		<!-- Login/Signup forms -->

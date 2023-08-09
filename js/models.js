@@ -1,8 +1,3 @@
-// Story class
-// getHostName()
-// StoryList class
-// User class
-
 "use strict";
 
 const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
@@ -17,7 +12,9 @@ class Story {
     this.username = username;
     this.createdAt = createdAt;
   }
+
   // Parses hostname out of URL and returns it.
+
   getHostName(urlString) {
     return new URL(this.url).host;
   }
@@ -69,14 +66,47 @@ class User {
     createdAt,
     favorites = [],
     ownStories = []
-  },
-    token) {
+  }, token) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;
     this.favorites = favorites.map(s => new Story(s));
     this.ownStories = ownStories.map(s => new Story(s));
     this.loginToken = token;
+
+    const $favoritesList = localStorage.getItem('userFavorites');
+    if ($favoritesList) {
+      this.favorites = JSON.parse($favoritesList);
+    }
+  }
+
+  getHostName(urlString) {
+    return new URL(this.url).host;
+  }
+
+  // This method toggles the favorite status of a given story.
+  toggleFavorite(story) {
+    // Find the index of the story in the favorites list by comparing story IDs.
+    const storyIndex = this.favorites.findIndex(favoriteStory => favoriteStory.storyId === story.storyId);
+    // If the story is already a favorite (found in favorites list), remove it.
+    if (storyIndex !== -1) {
+      this.favorites.splice(storyIndex, 1); // Remove the story from favorites list.
+    } else {
+      // If the story is not a favorite (not found in favorites list), add it.
+      this.favorites.push(story); // Add the story to favorites list.
+    }
+    // Save the updated favorites list to local storage.
+    this.saveFavoritesToStorage();
+    // Return the updated favorites list.
+    return this.favorites;
+  }
+
+  saveFavoritesToStorage() {
+    localStorage.setItem('userFavorites', JSON.stringify(this.favorites));
+  }
+
+  if($favoritesList) {
+    this.favorites = JSON.parse($favoritesList);
   }
   // Register new user in API, make User instance & return it.
   // - username: a new username
