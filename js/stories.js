@@ -75,6 +75,18 @@ function toggleFavorite(story) {
   return currentUser.favorites;
 }
 
+async function removeStory(user, storyId) {
+  const token = user.loginToken;
+  await axios({
+    method: "DELETE",
+    url: `${BASE_URL}/stories/${storyId}`,
+    data: { token: user.loginToken }
+  });
+  storyList.stories = storyList.stories.filter(story => story.storyId !== storyId);
+  user.ownStories = user.ownStories.filter(story => story.storyId !== storyId);
+  user.favorites = user.favorites.filter(s => s.storyId !== storyId);
+}
+
 $allStoriesList.on("click", ".favorite-button", async function () {
   const $favoriteButton = $(this);
   const $favoriteStory = $favoriteButton.closest("li");
@@ -92,6 +104,22 @@ $favoritesList.on("click", ".favorite-button", async function () {
   const story = storyList.stories.find(story => story.storyId === storyId);
   toggleFavorite(story);
   $favoriteButton.text($favoriteButton.text() === "❤️" ? "🖤" : "❤️");
+});
+
+$allStoriesList.on("click", ".delete-button", async function () {
+  const $deleteButton = $(this);
+  const $story = $deleteButton.closest("li");
+  const storyId = $story.attr("id");
+  await removeStory(currentUser, storyId);
+  $story.remove();
+});
+
+$favoritesList.on("click", ".delete-button", async function () {
+  const $deleteButton = $(this);
+  const $story = $deleteButton.closest("li");
+  const storyId = $story.attr("id");
+  await removeStory(currentUser, storyId);
+  $story.remove();
 });
 
 async function createStory(e) {
@@ -127,42 +155,3 @@ function showUserStories() {
   }
   $userStoriesList.show();
 }
-
-// function refreshPage() {
-//   if (!$allStoriesList) {
-
-//   }
-// }
-
-// // Switch to favorites view when the favorites button is clicked
-// $navFavorites.on("click", function () {
-//   switchToFavorites();
-// });
-
-// // Switch to main view when the home button is clicked
-// $homeButton.on("click", function () {
-//   switchToMainView();
-// });
-
-// function switchToFavorites() {
-//   const favoriteStories = storyList.stories.filter(story =>
-//     currentUser.favorites.some(favorite => favorite.storyId === story.storyId));
-//   putFavoritesOnPage(favoriteStories); // Display the favorite stories on the page
-//   isFavoritesView = true;
-// }
-
-// function switchToMainView() {
-//   navAllStories();
-//   isFavoritesView = false;
-// }
-
-// $(document).ready(function () {
-//   // Get and show stories when site first loads
-//   getStoriesOnStart();
-//   // Show the appropriate view based on the saved state
-//   if (isFavoritesView) {
-//     switchToFavorites();
-//   } else {
-//     switchToMainView();
-//   }
-// });
